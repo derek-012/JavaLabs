@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="426.0" prefWidth="594.0" style="-fx-background-color: #2d3436;" styleClass="UNDECORATED" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <ImageView fitHeight="24.0" fitWidth="20.0" layoutX="558.0" layoutY="16.0" onMouseClicked="#closeProgram" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/img/X.png" />
+         </image>
+      </ImageView>
+      <TextField id="tfBegin" fx:id="tfBegin" layoutX="14.0" layoutY="66.0" prefHeight="25.0" prefWidth="173.0" promptText="Начальное значение" />
+      <TextField id="tfEnd" fx:id="tfEnd" layoutX="211.0" layoutY="66.0" prefHeight="25.0" prefWidth="173.0" promptText="Конечное значение" />
+      <TextField id="tfStep" fx:id="tfStep" layoutX="405.0" layoutY="66.0" prefHeight="25.0" prefWidth="173.0" promptText="Шаг" />
+      <TableView fx:id="table" layoutX="15.0" layoutY="235.0" prefHeight="177.0" prefWidth="564.0">
+        <columns>
+          <TableColumn fx:id="tStep" text="Step" />
+          <TableColumn fx:id="tX" prefWidth="213.0" text="X" />
+            <TableColumn fx:id="tY" prefWidth="270.0" text="Y" />
+        </columns>
+      </TableView>
+      <Label layoutX="14.0" layoutY="15.0" prefHeight="17.0" prefWidth="166.0" text="Табуляция функции" textFill="#dfe6e9">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Button id="btnClear" layoutX="15.0" layoutY="104.0" mnemonicParsing="false" onMouseClicked="#clearFields" prefHeight="25.0" prefWidth="232.0" text="Очистить поля" />
+      <Button id="btnCalc" layoutX="346.0" layoutY="104.0" mnemonicParsing="false" onMouseClicked="#calculate" prefHeight="25.0" prefWidth="232.0" text="Посчитать" />
+      <Label layoutX="16.0" layoutY="171.0" prefHeight="17.0" prefWidth="149.0" text="Максимальное значение:" textFill="#dfe6e9" />
+      <Label fx:id="lMax" layoutX="167.0" layoutY="171.0" prefHeight="17.0" prefWidth="173.0" textFill="#dfe6e9" />
+      <Label layoutX="16.0" layoutY="196.0" prefHeight="17.0" prefWidth="149.0" text="Минимальное значение:" textFill="#dfe6e9" />
+      <Label fx:id="lMin" layoutX="167.0" layoutY="196.0" prefHeight="17.0" prefWidth="173.0" textFill="#dfe6e9" />
+      <Label layoutX="364.0" layoutY="171.0" text="Сумма:" textFill="#dfe6e9" />
+      <Label layoutX="364.0" layoutY="196.0" text="Среднее:" textFill="#dfe6e9" />
+      <Label fx:id="lAverage" layoutX="430.0" layoutY="196.0" prefHeight="17.0" prefWidth="149.0" textFill="#dfe6e9" />
+      <Label fx:id="lSum" layoutX="430.0" layoutY="171.0" prefHeight="17.0" prefWidth="149.0" textFill="#dfe6e9" />
+      <Label layoutX="16.0" layoutY="148.0" text="Всего точек табуляции:" textFill="#dfe6e9" />
+      <Label fx:id="lStepsCount" layoutX="165.0" layoutY="148.0" prefHeight="17.0" prefWidth="59.0" textFill="#dfe6e9" />
+   </children>
+</Pane>
