@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane fx:id="MainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="406.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <TableView fx:id="TableCar" editable="true" layoutX="14.0" layoutY="190.0" prefHeight="200.0" prefWidth="772.0">
+        <columns>
+          <TableColumn fx:id="TCID" prefWidth="62.0" text="ID" />
+          <TableColumn fx:id="TCModel" prefWidth="191.0" text="Модель" />
+            <TableColumn fx:id="TCYear" prefWidth="107.0" text="Год выпуска" />
+            <TableColumn fx:id="TCPrice" prefWidth="134.0" text="Цена" />
+            <TableColumn fx:id="TCRegNum" prefWidth="276.0" text="Регистрационный номер" />
+        </columns>
+      </TableView>
+      <Label layoutX="14.0" layoutY="121.0" text="Фильтрация данных:" />
+      <ChoiceBox fx:id="CBFilterModel" layoutX="14.0" layoutY="152.0" prefHeight="25.0" prefWidth="160.0" />
+      <TextField fx:id="TFYear" layoutX="194.0" layoutY="152.0" prefHeight="25.0" prefWidth="160.0" promptText="Год выпуска" />
+      <Label layoutX="360.0" layoutY="156.0" text="или" />
+      <TextField fx:id="TFExploitation" layoutX="388.0" layoutY="152.0" prefHeight="25.0" prefWidth="160.0" promptText="Более n лет эксплуатации" />
+      <TextField fx:id="TFPrice" layoutX="570.0" layoutY="152.0" prefHeight="25.0" prefWidth="113.0" promptText="Цена более" />
+      <Label layoutX="14.0" layoutY="65.0" text="Сортировка данных:" />
+      <Button fx:id="BCleanFilter" layoutX="699.0" layoutY="152.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Сбросить" />
+      <Label layoutX="14.0" layoutY="94.0" text="Год выпуска:" />
+      <ComboBox fx:id="CBSortYear" layoutX="94.0" layoutY="90.0" prefHeight="25.0" prefWidth="120.0" />
+      <Label layoutX="254.0" layoutY="94.0" text="Цена:" />
+      <ComboBox fx:id="CBSortPrice" layoutX="294.0" layoutY="90.0" prefHeight="25.0" prefWidth="120.0" />
+      <Button fx:id="BCleanSort" layoutX="468.0" layoutY="90.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Сбросить" />
+      <Button fx:id="BAddCar" layoutX="14.0" layoutY="25.0" mnemonicParsing="false" onAction="#addCar" prefHeight="25.0" prefWidth="175.0" text="Добавить запись" />
+      <Button fx:id="BDeleteCar" layoutX="202.0" layoutY="25.0" mnemonicParsing="false" onAction="#deleteCar" prefHeight="25.0" prefWidth="175.0" text="Удалить выбранную запись" />
+      <Button fx:id="BSave" layoutX="388.0" layoutY="25.0" mnemonicParsing="false" onAction="#saveDataAction" prefHeight="25.0" prefWidth="175.0" text="Сохранить в файл" />
+   </children>
+</Pane>
