@@ -10,20 +10,12 @@ public class Car implements Serializable {
     private int price;
     private String regnum;
 
-    Car() {}
     Car(int id) {
         setId(id);
         setModel("None");
-        setYear(0);
+        setYearInt(0);
         setPrice(0);
-        setRegnum("None");
-    }
-    Car(int id, String model, int year, int price, String regnum) {
-        setId(id);
-        setModel(model);
-        setYear(year);
-        setPrice(price);
-        setRegnum(regnum);
+        setRegNum("None");
     }
 
     public int getId() {
@@ -42,11 +34,26 @@ public class Car implements Serializable {
         this.model = model;
     }
 
-    public int getYear() {
+    public String getYearString() {
+        return String.valueOf(year);
+    }
+
+    public boolean setYearString(String year) {
+        int yearInt;
+        try {
+            yearInt = Integer.parseInt(year);
+            this.year = yearInt;
+            return true;
+        } catch(NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public int getYearInt() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYearInt(int year) {
         this.year = year;
     }
 
@@ -58,11 +65,25 @@ public class Car implements Serializable {
         this.price = price;
     }
 
-    public String getRegnum() {
+    public boolean setPriceString(String price) {
+        try {
+            this.setPrice(Integer.parseInt(price));
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public String getRegNum() {
         return regnum;
     }
 
-    public void setRegnum(String regnum) {
+    public void setRegNum(String regnum) {
         this.regnum = regnum;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%d, %s, %d, %d, %s", getId(), getModel(), getYearInt(), getPrice(), getRegNum());
     }
 }
