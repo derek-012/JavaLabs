@@ -1,15 +1,28 @@
 package sample;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class CarFilter {
+public abstract class CarFilter {
     private String model;
     private Integer year;
     private Integer exp;
     private Integer price;
+
+    public String getModel() {
+        return model;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public Integer getExp() {
+        return exp;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
 
     CarFilter() {
         model = null;
@@ -29,21 +42,5 @@ public class CarFilter {
         return model == null && year == null && exp == null && price == null;
     }
 
-    public List<Car> filter(List<Car> list) {
-        if (!this.isEmpty()) {
-            Stream<Car> stream = list.stream();
-            if (model != null)
-                stream = stream.filter(car -> car.getModel().equals(this.model));
-            if (year != null && exp == null)
-                stream = stream.filter(car -> car.getYearInt() == year);
-            else if (year == null && exp != null) {
-                int currentYear = LocalDate.now().getYear();
-                stream = stream.filter(car -> (currentYear - car.getYearInt()) > exp);
-            }
-            if (price != null)
-                stream = stream.filter(car -> car.getPrice() > price);
-            return stream.collect(Collectors.toList());
-        } else
-            return list;
-    }
+    public abstract List<Car> filter(List<Car> list);
 }

@@ -1,24 +1,25 @@
 package sample;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class CarData {
 
-    private final String filename;
+    //private final String filename;
 
     private final List<Car> basicList;
     private List<Car> currentList;
 
-    private final CarFilter carFilter = new CarFilter();
+    private boolean edited = false;
+
+    private final CarFilterList carFilterList = new CarFilterList();
+    private final CarReader carReader;
 
     private Comparator<Car> comparator = null;
 
     CarData(String filename) {
-        this.filename = filename;
-        currentList = basicList = readFromFile(filename);
+        //this.filename = filename;
+        carReader = new CarReader(filename);
+        currentList = basicList = carReader.readFromFile();
     }
 
     public List<Car> getList() {
@@ -28,7 +29,7 @@ public class CarData {
     }
 
     private void filter() {
-        currentList = carFilter.filter(basicList);
+        currentList = carFilterList.filter(basicList);
     }
 
     private void sort() {
@@ -37,7 +38,7 @@ public class CarData {
     }
 
     public void setFilter(String model, Integer year, Integer exp, Integer price) {
-        carFilter.setFilter(model, year, exp, price);
+        carFilterList.setFilter(model, year, exp, price);
     }
 
     public void setSort(int type) {
@@ -50,52 +51,41 @@ public class CarData {
         }
     }
 
-    private List<Car> readFromFile(String filename) {
-        List<Car> list = new ArrayList<>();
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
-            while (true) {
-                try {
-                    list.add((Car) in.readObject());
-                } catch (EOFException e) {
-                    break;
-                }
-            }
-            return list;
-        } catch (IOException | ClassNotFoundException e) {
-            if (e.getClass() == IOException.class) {
-                return new ArrayList<>();
-            }
-            return list;
-        }
-    }
-
     public boolean save() {
-        return saveToFile(filename);
-    }
-
-    private boolean saveToFile(String filename) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
-            for (Car car : basicList) {
-                out.writeObject(car);
-            }
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
+        return carReader.saveToFile(basicList);
     }
 
     public String[] getModelList() {
-        return (!basicList.isEmpty()) ? basicList.stream().map(Car::getModel).distinct().toArray(String[]::new) : null;
+        Map<Integer, String> models = new HashMap<>();
+        Iterator<Car> iterator = basicList.iterator();
+        Car car;
+        while (iterator.hasNext()) {
+            car = iterator.next();
+            if (!models.containsValue(car.getModel()))
+                models.put(models.size() + 1, car.getModel());
+        }
+        return models.values().toArray(String[]::new);
+        //return (!basicList.isEmpty()) ? basicList.stream().map(Car::getModel).distinct().toArray(String[]::new) : null;
     }
 
     public Car addCar() {
         int size = basicList.size();
         Car car = new Car((size > 0) ? basicList.get(size - 1).getId() + 1 : 1);
         basicList.add(car);
+        setEdited(true);
         return car;
     }
 
     public void deleteCar(Car car) {
         basicList.remove(car);
+        setEdited(true);
+    }
+
+    public void setEdited(boolean status) {
+        edited = status;
+    }
+
+    public boolean isEdited() {
+        return edited;
     }
 }

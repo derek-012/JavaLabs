@@ -7,14 +7,18 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.net.URL;
 import java.util.*;
 import java.util.regex.Pattern;
 
 public class Controller implements Initializable {
+    Stage MainStage;
     @FXML Pane MainPane;
 
     @FXML Button BAddCar, BDeleteCar;
@@ -30,29 +34,40 @@ public class Controller implements Initializable {
     @FXML TableColumn<Car, String> TCModel, TCRegNum, TCID, TCYear, TCPrice;
 
 
-//    public void exitApplication(WindowEvent event) {
-//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-//        alert.setTitle("Сохранение данных");
-//        alert.setHeaderText(null);
-//        alert.setContentText("Сохранить имеющиеся данные в файл?");
-//        Optional<ButtonType> result = alert.showAndWait();
-//        if (result.isPresent())
-//            if (result.get() == ButtonType.OK)
-//                saveData();
-//        Platform.exit();
-//    }
+    public void exitApplication(WindowEvent event) {
+        if (!data.isEdited())
+            return;
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Сохранение данных");
+        alert.setHeaderText(null);
+        alert.setContentText("Сохранить имеющиеся данные в файл?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent())
+            if (result.get() == ButtonType.OK)
+                saveData();
+    }
 
     CarData data;
 
 
     final List<String> listSort = Arrays.asList("-", "Возрастание", "Убывание");
 
+    public void setStageAndListeners(Stage stage) {
+        MainStage = stage;
+        MainStage.setOnCloseRequest(this::exitApplication);
+    }
+
+    private boolean isNumber(String s) {
+        for (char ch : s.toCharArray()) {
+            if (!Character.isDigit(ch))
+                return false;
+        }
+        return true;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         final String filename = "data.ser";
-
-        //MainPane.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::exitApplication);
-
 
         CBSortYear.getItems().addAll(listSort);
         CBSortYear.setValue(listSort.get(0));
@@ -68,9 +83,21 @@ public class Controller implements Initializable {
         );
 
         TFYear.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
-            System.out.println(event.getText());
+//            System.out.println(event.getText());
+//            Character ch = event.getCharacter().charAt(0);
+//            if (Character.)
+//                TFYear.deletePreviousChar();
+            KeyCode key = event.getCode();
+            if (key == KeyCode.PASTE) {
+                TFYear.undo();
+            } else if (!Character.isIdentifierIgnorable(key.getCode()) && (!Character.isDigit(key.getCode()) || (event.isShiftDown() && Character.isDigit(key.getCode()))))
+                TFYear.deletePreviousChar();
+//            if (!Character.isDigit(key.getCode()))
+//                System.out.println("" + event.getCode().getChar() + " is digit!");
             TFExploitation.setDisable(TFYear.getLength() > 0);
         });
+
+
 
         TFExploitation.addEventHandler(KeyEvent.KEY_RELEASED, event ->
             TFYear.setDisable(TFExploitation.getLength() > 0)
@@ -151,7 +178,7 @@ public class Controller implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 data.deleteCar(car);
-                TableCar.refresh();
+                refreshTable();
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
