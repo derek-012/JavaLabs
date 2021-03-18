@@ -3,21 +3,17 @@ package sample;
 import java.util.*;
 
 public class CarData {
-
-    //private final String filename;
-
     private final List<Car> basicList;
     private List<Car> currentList;
 
     private boolean edited = false;
 
-    private final CarFilterList carFilterList = new CarFilterList();
+    private final CarFilter carFilterList = new CarFilterList();
     private final CarReader carReader;
 
     private Comparator<Car> comparator = null;
 
     CarData(String filename) {
-        //this.filename = filename;
         carReader = new CarReader(filename);
         currentList = basicList = carReader.readFromFile();
     }

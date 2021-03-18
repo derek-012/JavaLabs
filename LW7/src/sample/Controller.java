@@ -58,11 +58,16 @@ public class Controller implements Initializable {
     }
 
     private boolean isNumber(String s) {
-        for (char ch : s.toCharArray()) {
-            if (!Character.isDigit(ch))
-                return false;
+        if (s.length() != 0) {
+            for (char ch : s.toCharArray()) {
+                if (!Character.isDigit(ch))
+                    return false;
+            }
+            return true;
+        } else {
+            return false;
         }
-        return true;
+
     }
 
     @Override
@@ -83,25 +88,33 @@ public class Controller implements Initializable {
         );
 
         TFYear.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
-//            System.out.println(event.getText());
-//            Character ch = event.getCharacter().charAt(0);
-//            if (Character.)
-//                TFYear.deletePreviousChar();
             KeyCode key = event.getCode();
-            if (key == KeyCode.PASTE) {
-                TFYear.undo();
+            if (key == KeyCode.V && event.isControlDown()) {
+                if (!isNumber(TFYear.getText()))
+                    TFYear.undo();
             } else if (!Character.isIdentifierIgnorable(key.getCode()) && (!Character.isDigit(key.getCode()) || (event.isShiftDown() && Character.isDigit(key.getCode()))))
                 TFYear.deletePreviousChar();
-//            if (!Character.isDigit(key.getCode()))
-//                System.out.println("" + event.getCode().getChar() + " is digit!");
             TFExploitation.setDisable(TFYear.getLength() > 0);
         });
 
+        TFExploitation.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
+            KeyCode key = event.getCode();
+            if (key == KeyCode.V && event.isControlDown()) {
+                if (!isNumber(TFExploitation.getText()))
+                    TFExploitation.undo();
+            } else if (!Character.isIdentifierIgnorable(key.getCode()) && (!Character.isDigit(key.getCode()) || (event.isShiftDown() && Character.isDigit(key.getCode()))))
+                TFExploitation.deletePreviousChar();
+            TFYear.setDisable(TFExploitation.getLength() > 0);
+        });
 
-
-        TFExploitation.addEventHandler(KeyEvent.KEY_RELEASED, event ->
-            TFYear.setDisable(TFExploitation.getLength() > 0)
-        );
+        TFPrice.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
+            KeyCode key = event.getCode();
+            if (key == KeyCode.V && event.isControlDown()) {
+                if (!isNumber(TFPrice.getText()))
+                    TFPrice.undo();
+            } else if (!Character.isIdentifierIgnorable(key.getCode()) && (!Character.isDigit(key.getCode()) || (event.isShiftDown() && Character.isDigit(key.getCode()))))
+                TFPrice.deletePreviousChar();
+        });
 
         TCID.setCellValueFactory(p -> new SimpleObjectProperty<>(String.valueOf(p.getValue().getId())));
         TCModel.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getModel()));
@@ -113,7 +126,7 @@ public class Controller implements Initializable {
         TCYear.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getYearString()));
         TCYear.setCellFactory(TextFieldTableCell.forTableColumn());
         TCYear.setOnEditCommit(event -> {
-            if (!event.getRowValue().setYearString(event.getNewValue() != null ? event.getNewValue() : event.getOldValue())) {
+            if () {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Неверные данные");
                 alert.setTitle(null);
@@ -125,7 +138,7 @@ public class Controller implements Initializable {
         TCPrice.setCellValueFactory(p -> new SimpleObjectProperty<>(String.valueOf(p.getValue().getPrice())));
         TCPrice.setCellFactory(TextFieldTableCell.forTableColumn());
         TCPrice.setOnEditCommit(event -> {
-            if (!event.getRowValue().setPriceString(event.getNewValue() != null ? event.getNewValue() : event.getOldValue())) {
+            if (!event.getRowValue().setPriceString(event.getNewValue() != null && isNumber(event.getNewValue()) ? event.getNewValue() : event.getOldValue())) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Неверные данные");
                 alert.setTitle(null);
@@ -206,13 +219,68 @@ public class Controller implements Initializable {
         alert.showAndWait();
     }
 
+    private String getFilterModel() {
+        return !CBFilterModel.getValue().equals(CBFilterModel.getItems().get(0)) ? CBFilterModel.getValue() : null;
+    }
+
+    private Integer getFilterYear() {
+        if (TFYear.getLength() != 0)
+            return (checkYear(TFYear.getText())) ? Integer.parseInt(TFYear.getText()) : -1;
+        return null;
+    }
+
+    private boolean checkYear(String year) {
+        return Pattern.matches("(19[5-9]\\d)|(20(([01]\\d)|(2[01])))", year);
+    }
+
+    private Integer getFilterExp() {
+        if (TFExploitation.getLength() != 0)
+            return (isNumber(TFExploitation.getText())) ? Integer.parseInt(TFExploitation.getText()) : -1;
+        return null;
+    }
+
+    private Integer getFilterPrice() {
+        if (TFPrice.getLength() != 0)
+            return (!TFPrice.getText().isBlank() && isNumber(TFPrice.getText())) ? Integer.parseInt(TFPrice.getText()) : -1;
+        return null;
+    }
+
+    private void showFilterAlert(int type) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Некорректные данные");
+        alert.setHeaderText(null);
+        String s = "";
+        switch (type) {
+            case 1 -> s = "года выпуска";
+            case 2 -> s = "эксплуатации";
+            case 3 -> s = "цены";
+        }
+        alert.setContentText("Проверьте корректность ввода " + s + " автомобиля.");
+        alert.showAndWait();
+    }
+
     public void setFilter() {
-        data.setFilter(
-                !CBFilterModel.getValue().equals(CBFilterModel.getItems().get(0)) ? CBFilterModel.getValue() : null,
-                !TFYear.getText().isBlank() ? Integer.parseInt(TFYear.getText()) : null,
-                !TFExploitation.getText().isBlank() ? Integer.parseInt(TFExploitation.getText()) : null,
-                !TFPrice.getText().isBlank() ? Integer.parseInt(TFPrice.getText()) : null
-        );
+        String model = getFilterModel();
+
+        Integer year;
+        if ((year = getFilterYear()) != null && year == -1) {
+            showFilterAlert(1);
+            return;
+        }
+
+        Integer exp;
+        if ((exp = getFilterExp()) != null  && exp == -1) {
+            showFilterAlert(2);
+            return;
+        }
+
+        Integer price;
+        if ((price = getFilterPrice()) != null && price == -1) {
+            showFilterAlert(3);
+            return;
+        }
+
+        data.setFilter(model, year, exp, price);
         refreshTable();
     }
 
