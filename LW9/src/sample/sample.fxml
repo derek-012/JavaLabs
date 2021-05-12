@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane prefHeight="388.0" prefWidth="675.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <ChoiceBox fx:id="CBModelA" layoutX="17.0" layoutY="31.0" prefHeight="25.0" prefWidth="135.0" />
+   <TextField fx:id="TFExp" layoutX="158.0" layoutY="63.0" prefHeight="25.0" prefWidth="120.0" promptText="Эксплуатация" />
+   <Label layoutX="56.0" layoutY="14.0" text="Задание А и E" />
+   <TextField fx:id="TFPrice" layoutX="285.0" layoutY="63.0" prefHeight="25.0" prefWidth="120.0" promptText="Цена" />
+   <Label layoutX="190.0" layoutY="14.0" text="Задание B" />
+   <Label layoutX="317.0" layoutY="14.0" text="Задание C" />
+   <Label layoutX="442.0" layoutY="14.0" text="Задание D" />
+   <Label layoutX="572.0" layoutY="14.0" text="Задание F" />
+   <Button fx:id="BExerciseD" layoutX="411.0" layoutY="31.0" mnemonicParsing="false" onAction="#ExerciseD" prefHeight="25.0" prefWidth="120.0" text="Сортировать" />
+   <ChoiceBox fx:id="CBModelF" layoutX="539.0" layoutY="31.0" prefHeight="25.0" prefWidth="120.0" />
+   <TableView fx:id="TCars" layoutX="17.0" layoutY="133.0" prefHeight="237.0" prefWidth="641.0">
+     <columns>
+       <TableColumn fx:id="TCID" prefWidth="43.0" text="ID" />
+       <TableColumn fx:id="TCModel" prefWidth="156.0" text="Модель" />
+         <TableColumn fx:id="TCYear" prefWidth="119.0" text="Год производства" />
+         <TableColumn fx:id="TCPrice" prefWidth="130.0" text="Цена" />
+         <TableColumn fx:id="TCRegNum" prefWidth="192.0" text="Регистрационный номер" />
+     </columns>
+   </TableView>
+   <Button fx:id="BExerciseB" layoutX="158.0" layoutY="96.0" mnemonicParsing="false" onAction="#ExerciseB" prefHeight="25.0" prefWidth="120.0" text="Выполнить" />
+   <Button fx:id="BExerciseC" layoutX="285.0" layoutY="96.0" mnemonicParsing="false" onAction="#ExerciseC" prefHeight="25.0" prefWidth="120.0" text="Выполнить" />
+   <Button fx:id="BExerciseA" layoutX="17.0" layoutY="63.0" mnemonicParsing="false" onAction="#ExerciseA" prefHeight="25.0" prefWidth="135.0" text="Выполнить" />
+   <Button fx:id="BExerciseF" layoutX="539.0" layoutY="63.0" mnemonicParsing="false" onAction="#ExerciseF" prefHeight="25.0" prefWidth="120.0" text="Выполнить" />
+   <Button fx:id="BExerciseE" layoutX="411.0" layoutY="63.0" mnemonicParsing="false" onAction="#ExerciseE" prefHeight="25.0" prefWidth="120.0" text="Задание E" />
+   <ChoiceBox fx:id="CBModelB" layoutX="158.0" layoutY="31.0" prefHeight="25.0" prefWidth="120.0" />
+   <TextField fx:id="TFYear" layoutX="285.0" layoutY="31.0" prefHeight="25.0" prefWidth="120.0" promptText="Год" />
+</Pane>
