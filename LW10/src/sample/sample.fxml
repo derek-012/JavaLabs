@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="100.0" maxWidth="600.0" minHeight="100.0" minWidth="600.0" prefHeight="100.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <TextField fx:id="TFStart" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="128.0" promptText="Начало интервала" />
+      <TextField fx:id="TFEnd" layoutX="160.0" layoutY="14.0" prefHeight="25.0" prefWidth="128.0" promptText="Конец интервала" />
+      <TextField fx:id="TFCount" layoutX="307.0" layoutY="14.0" prefHeight="25.0" prefWidth="128.0" promptText="Количество шагов" />
+      <Button fx:id="BCalculate" layoutX="453.0" layoutY="14.0" mnemonicParsing="false" onAction="#calculate" prefHeight="25.0" prefWidth="128.0" text="Вычислить" />
+      <TextField fx:id="TFResult" layoutX="14.0" layoutY="60.0" prefHeight="25.0" prefWidth="188.0" promptText="Результат" />
+      <TextField fx:id="TFTime" layoutX="224.0" layoutY="60.0" prefHeight="25.0" prefWidth="188.0" promptText="Время выполнения" />
+   </children>
+</Pane>
